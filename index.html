@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arfa | Systems Architect & Developer</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="logo">ARFA.</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header id="home">
+        <div class="hero-content" data-aos="fade-up" data-aos-duration="1200">
+            <h1>Elevating Digital Architecture</h1>
+            <p>Full Stack Developer & Systems Architect delivering scalable, high-performance solutions.</p>
+            <a href="#portfolio" class="btn btn-primary">View Credentials</a>
+        </div>
+    </header>
+
+    <section id="portfolio" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Professional Qualifications</h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">A consolidated portfolio of my technical certifications and achievements.</p>
+            
+            <div class="single-card-container" data-aos="zoom-in" data-aos-delay="200">
+                <div class="cert-card">
+                    <div class="cert-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                    </div>
+                    <h3>Complete Certification Portfolio</h3>
+                    <p>Includes credentials in Full Stack Development, Systems Architecture, and Database Management.</p>
+                    <a href="assets/certificates.pdf" target="_blank" class="btn btn-outline">Open Master PDF &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container contact-wrapper" data-aos="fade-up">
+            <div class="contact-text">
+                <h2>Let's discuss your next project.</h2>
+                <p>Available for freelance opportunities and full-time roles. Reach out to start a conversation about how we can build something great together.</p>
+            </div>
+            
+            <div class="contact-form-container">
+                <form id="contactForm">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" id="submitBtn" class="btn btn-primary w-100">Send Secure Message</button>
+                    <p id="responseMsg" class="response-msg"></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Arfa. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        // 1. Initialize animations
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // 2. Add shadow to navbar on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // 3. Handle Contact Form Submission
+        const contactForm = document.getElementById('contactForm');
+        const responseMsg = document.getElementById('responseMsg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); 
+                
+                submitBtn.innerText = "Sending...";
+                submitBtn.disabled = true;
+
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    message: document.getElementById('message').value
+                };
+
+                try {
+                    const response = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (response.ok) {
+                        responseMsg.style.color = "#2563eb"; // Professional blue success text
+                        responseMsg.innerText = "✓ Thank you! Your message has been securely sent.";
+                        contactForm.reset();
+                    } else {
+                        throw new Error("Failed to send message.");
+                    }
+                } catch (err) {
+                    responseMsg.style.color = "#ef4444"; // Red error text
+                    responseMsg.innerText = "✕ Error connecting to the server. Please try again.";
+                } finally {
+                    submitBtn.innerText = "Send Secure Message";
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
